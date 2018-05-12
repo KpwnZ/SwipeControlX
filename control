@@ -1,0 +1,9 @@
+Package: com.xcxiao.swipecontrolx
+Name: SwipeControlX
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: 晓-XCXiao
+Author: 晓-XCXiao
+Section: Tweaks
