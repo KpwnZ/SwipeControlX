@@ -21,10 +21,24 @@
 @interface SBCoverSheetPrimarySlidingViewController : UIViewController
 @property (retain, nonatomic) SBGrabberTongue *grabberTongue;
 -(CGPoint)_locationForGesture:(id)arg1;
+-(id)dismissGestureRecognizer;
 @end
 
 @interface FBScene : NSObject
 -(int)currentInterfaceOrientation;
+@end
+
+@interface SBApplication : NSObject
+-(FBScene *)mainScene;
+@end
+
+@interface SBLockScreenViewControllerBase : UIViewController
+-(BOOL)isAuthenticated;
+@end
+
+@interface SBLockScreenManager : NSObject
++(SBLockScreenManager *)sharedInstance;
+-(SBLockScreenViewControllerBase *)lockScreenViewController;
 @end
 
 #define Home 1
@@ -40,6 +54,7 @@ static int rightGesture = 1;
 BOOL handleGesture(CGFloat x) {
   int gesture = (x <= kScreenWidth*1/3)? (gesture = leftGesture) : ((x <= kScreenWidth*2/3)? (gesture = centerGesture) : (gesture = rightGesture));
   BOOL didHandleGesture = YES;
+
   switch(gesture) {
     case Home :
       didHandleGesture = NO;
@@ -57,6 +72,7 @@ BOOL handleGesture(CGFloat x) {
       //take ScreenShot;
       break;
   }
+  
   return didHandleGesture;
 }
 
@@ -91,7 +107,7 @@ BOOL handleGesture(CGFloat x) {
   UIView *view = [self.deckGrabberTongue valueForKey:@"_tongueContainer"];
   CGPoint point = [[self.deckGrabberTongue valueForKey:@"_edgePullGestureRecognizer"] locationInView:view];
 
-  if([(FBScene *)[[((SpringBoard *)[UIApplication sharedApplication]) _accessibilityFrontMostApplication] mainScene] currentInterfaceOrientation] != 1 || !handleGesture(point.x))
+  if([(FBScene *)[(SBApplication *)[((SpringBoard *)[UIApplication sharedApplication]) _accessibilityFrontMostApplication] mainScene] currentInterfaceOrientation] != 1 || !handleGesture(point.x))
     %orig;
 
 }
